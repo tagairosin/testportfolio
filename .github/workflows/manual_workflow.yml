@@ -15,10 +15,18 @@ jobs:
           git push origin ${{ secrets.VERSION }}
       - name: create draft release
         uses: actions/github-script@v5
+        id: this_id
         env:
           VERSION: '${{secrets.VERSION}}'
         with:
           script: |
+            github.rest.repos.getReleaseByTag({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              tag_name: "sometag"
+            })
+            echo "after getreleasebytag"
+            echo "${{steps.this_id.outputs.result}}"
             const { VERSION } = process.env
             github.rest.repos.createRelease({
               owner: context.repo.owner,
@@ -28,3 +36,7 @@ jobs:
               draft: true,
               body: "this is a test tag release draft etc."
             })
+            echo "aftercreaterelease"
+            echo "${{steps.this_id.outputs.result}}"
+      - name: steps result
+        run: echo "${{steps.this_id.outputs.result}}"
