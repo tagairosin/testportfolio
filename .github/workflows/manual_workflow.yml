@@ -11,6 +11,7 @@ jobs:
           VERSION: '${{secrets.VERSION}}'
         with:
           script: |
+            const { VERSION } = process.env
             github.rest.git.createRelease({
               tag_name: `${VERSION}`,
               name: "Test Release Draft",
