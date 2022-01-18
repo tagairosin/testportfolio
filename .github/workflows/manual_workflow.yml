@@ -7,11 +7,13 @@ jobs:
   test-stuff:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/github-script@v5
+      - name: create draft release
+        uses: actions/github-script@v5
         with:
           script: |
-            github.rest.git.createRef({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              ref: 'refs/tags/$VERSION'
+            github.rest.git.createRelease({
+              tag_name: $VERSION,
+              name: "Test Release Draft",
+              draft: true,
+              body: "this is a test tag release draft etc."
             })
