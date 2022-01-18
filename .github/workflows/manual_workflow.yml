@@ -5,8 +5,9 @@ on:
   workflow_dispatch
 jobs:
   test-stuff:
-    name: Create tag
-    uses: actions/github-script@v5
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/github-script@v5
         with:
           script: |
             github.rest.git.createRef({
