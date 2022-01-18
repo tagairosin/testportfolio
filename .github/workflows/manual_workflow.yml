@@ -5,6 +5,11 @@ jobs:
   test-stuff:
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Tag repo
+        run: |
+         git tag -a ${{ secrets.VERSION }} -m "tagging for release"
       - name: create draft release
         uses: actions/github-script@v5
         env:
