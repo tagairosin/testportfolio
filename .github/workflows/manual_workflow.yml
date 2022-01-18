@@ -1,0 +1,16 @@
+name: Test Workflow
+env:
+  VERSION: ${{ secrets.VERSION }}
+on: 
+  workflow_dispatch
+jobs:
+  test-stuff:
+    name: Create tag
+    uses: actions/github-script@v5
+        with:
+          script: |
+            github.rest.git.createRef({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              ref: 'refs/tags/$VERSION'
+            })
