@@ -18,8 +18,8 @@ jobs:
               owner: context.repo.owner,
               repo: context.repo.repo
             })
-            echo "after getreleasebytag"
-            echo "${{steps.list_tags.outputs.result}}"
+            console.log("after getreleasebytag")
+            console.log(`"${{steps.list_tags.outputs.result}}"`)
       - name: steps result
         run: echo "${{steps.list_tags.outputs.result}}"
 #       - name: Tag repo
