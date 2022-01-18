@@ -12,6 +12,7 @@ jobs:
           git config --global user.email "me@example.com"
           git config --global user.name "tagairosin"
           git tag -a ${{ secrets.VERSION }} -m "tagging for release"
+          git push origin ${{ secrets.VERSION }}
       - name: create draft release
         uses: actions/github-script@v5
         env:
