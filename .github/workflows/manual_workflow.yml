@@ -22,7 +22,7 @@ jobs:
               }))
             console.log(output.data)
             for (const tag of output.data) {
-              console.log(output.data.name)
+              console.log(tag.name)
               notfound = false
             }
             return notfound
