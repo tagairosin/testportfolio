@@ -24,10 +24,14 @@ jobs:
             console.log(output.data)
             # does tag exist for this version?
             for (const tag of output.data) {
-              if (tag.name == `${VERSION}`){
-                found = true
-                console.log("version tag exists")
-              }
+              console.log("version1")
+              console.log(`${VERSION}`)
+              console.log("version2")
+              console.log(${VERSION})
+              #if (tag.name == `${VERSION}`){
+              #  found = true
+              #  console.log("version tag exists")
+              #}
             }
             const releases = await(github.rest.repos.listReleases({
                 owner: context.repo.owner,
