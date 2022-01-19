@@ -9,7 +9,7 @@ jobs:
     runs-on: ubuntu-latest
     name: test stuff
     steps:
+      - name: Check out repo
+        uses: actions/checkout@v2
       - name: run script
-        if: ${{github.ref_name == env.BRANCH}}
-        run: |
-          echo "it frickin worked"
+        run: ./github/workflows/post_stuff.py
