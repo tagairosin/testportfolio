@@ -31,6 +31,12 @@ jobs:
                     repo: context.repo.repo
                   }))
                 console.log(releases)
+                for (const rel of releases.data) {
+                  console.log(rel.id)
+                  if (rel.tag_name == `${VERSION}`) {
+                    console.log("matched tag") 
+                  }
+                }
               }
             }
             return found
