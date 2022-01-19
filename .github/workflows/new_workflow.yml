@@ -12,4 +12,4 @@ jobs:
       - name: Check out repo
         uses: actions/checkout@v2
       - name: run script
-        run: ./github/workflows/post_stuff.py
+        run: python ./github/workflows/post_stuff.py
