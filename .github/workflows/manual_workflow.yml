@@ -16,12 +16,13 @@ jobs:
         with:
           script: |
             var found = false
-            const {VERSION} = process.env
+            const { VERSION } = process.env
+            console.log(`${VERSION}`)
             const output = await(github.rest.repos.listTags({
                 owner: context.repo.owner,
                 repo: context.repo.repo
               }))
-            console.log(output.data)
+            #console.log(output.data)
             # does tag exist for this version?
             for (const tag of output.data) {
               console.log(tag.name)
