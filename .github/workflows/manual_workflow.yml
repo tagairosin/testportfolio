@@ -14,12 +14,13 @@ jobs:
           VERSION: '${{secrets.VERSION}}'
         with:
           script: |
-            github.rest.repos.listTags({
+            const list_output = await (github.rest.repos.listTags({
               owner: context.repo.owner,
               repo: context.repo.repo
-            })
+            }))
             console.log("after getreleasebytag")
-            console.log(`"${{steps.list_tags.outputs.result}}"`)
+            console.log(result)
+            return list_output
       - name: steps result
         run: echo "${{steps.list_tags.outputs.result}}"
 #       - name: Tag repo
