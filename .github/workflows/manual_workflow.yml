@@ -7,7 +7,6 @@ jobs:
     steps:
       - name: list tags
         uses: actions/github-script@v5
-        continue-on-error: true
         id: list_tags
         env:
          VERSION: '${{ secrets.VERSION }}'
@@ -31,22 +30,22 @@ jobs:
                   repo: context.repo.repo
                 }))
                 console.log(releases)
-                for (const release of releases.data) {
-                  console.log(release.tag_name)
-                  if (release.tag_name == `${VERSION}`) {
-                    console.log("found draft release tag")
-                    let release_id = release.id
-                    # update the release
-                    github.rest.repos.updateRelease({
-                      owner: context.repo.owner,
-                      repo: context.repo.repo,
-                      release_id: release_id,
-                      name: "Updated Test Release Draft",
-                      draft: true,
-                      body: "this is an updated test tag release draft etc."
-                    })
-                  }
-                }
+                # for (const release of releases.data) {
+                #   console.log(release.name)
+                #   if (release.tag_name == `${VERSION}`) {
+                #     console.log("found draft release tag")
+                #     let release_id = release.id
+                #     # update the release
+                #     github.rest.repos.updateRelease({
+                #       owner: context.repo.owner,
+                #       repo: context.repo.repo,
+                #       release_id: release_id,
+                #       name: "Updated Test Release Draft",
+                #       draft: true,
+                #       body: "this is an updated test tag release draft etc."
+                #     })
+                #   }
+                # }
               }
             }            
             return found
@@ -64,22 +63,22 @@ jobs:
           git tag -a ${VERSION} -m "tagging for release"
           git push origin ${VERSION}
           echo "tag created"
-      - name: create release draft
-        if: ${{steps.list_tags.outputs.result == false}}
-        uses: actions/github-script@v5
-        continue-on-error: true
-        id: create_draft
-        env:
-         VERSION: '${{ secrets.VERSION }}'
-        with:
-          script: |
-            const { VERSION } = process.env
-            console.log(`${VERSION}`)
-            github.rest.repos.createRelease({
-                owner: context.repo.owner,
-                repo: context.repo.repo,
-                tag_name: `${VERSION}`,
-                name: "Test Release Draft",
-                draft: true,
-                body: "this is an test tag release draft etc."
-              })
+      # - name: create release draft
+      #   if: ${{steps.list_tags.outputs.result == false}}
+      #   uses: actions/github-script@v5
+      #   continue-on-error: true
+      #   id: create_draft
+      #   env:
+      #    VERSION: '${{ secrets.VERSION }}'
+      #   with:
+      #     script: |
+      #       const { VERSION } = process.env
+      #       console.log(`${VERSION}`)
+      #       github.rest.repos.createRelease({
+      #           owner: context.repo.owner,
+      #           repo: context.repo.repo,
+      #           tag_name: `${VERSION}`,
+      #           name: "Test Release Draft",
+      #           draft: true,
+      #           body: "this is an test tag release draft etc."
+      #         })
