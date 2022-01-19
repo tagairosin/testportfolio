@@ -19,8 +19,7 @@ jobs:
             var retval = true
             const output = await(github.rest.repos.listTags({
                 owner: context.repo.owner,
-                repo: context.repo.repo,
-                tag_name: `${VERSION}`
+                repo: context.repo.repo
               }))
             console.log(output)
             # process list
