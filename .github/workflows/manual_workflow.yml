@@ -14,13 +14,15 @@ jobs:
           VERSION: '${{secrets.VERSION}}'
         with:
           script: |
-            return github.rest.repos.getReleaseByTag({
+            const output = await(github.rest.repos.getReleaseByTag({
               owner: context.repo.owner,
               repo: context.repo.repo,
               tag_name: "sometag"
-            })
-      - name: steps result
-        run: echo "${{steps.list_tags.outputs.result}}"
+            }))
+            if (output.status == "404"):
+              console.log("not found, create tag and draft release")
+            else:
+              console.log("update the draft release")
 #       - name: Tag repo
 #         run: |
 #           git config --global user.email "me@example.com"
