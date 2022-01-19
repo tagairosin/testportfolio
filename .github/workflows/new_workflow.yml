@@ -1,6 +1,7 @@
 name: Shiny New Workflow
 env:
   VERSION: ${{ secrets.VERSION }}
+  BRANCH: master
 on: 
   workflow_dispatch
 jobs:
@@ -8,12 +9,7 @@ jobs:
     runs-on: ubuntu-latest
     name: test stuff
     steps:
-      - name: Install required system packages
-        run: |
-          pip install PyGithub requests
-      - name: Checkout
-        uses: actions/checkout@v2
       - name: run script
+        if: ${{github.ref_name == env.BRANCH}}
         run: |
-          cmd=$(curl https://api.github.com/repos/tagairosin/testportfolio/releases)
-          echo $cmd
+          echo "it frickin worked"
