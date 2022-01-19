@@ -15,14 +15,14 @@ jobs:
         with:
           script: |
             const { VERSION } = process.env
-            var result = "notfound"
+            var retval = "notfound"
             try {
               const output = await(github.rest.repos.getReleaseByTag({
                 owner: context.repo.owner,
                 repo: context.repo.repo,
                 tag_name: "sometag"
               }))
-              result = "found"
+              retval = "found"
               console.log(output)
             }
             catch (error) {
@@ -31,7 +31,7 @@ jobs:
                 console.log("not found")
               }
             }
-            return result
+            return retval
       - name: create tag
         id: create_tag
         # last step was failure = release tag wasn't found
