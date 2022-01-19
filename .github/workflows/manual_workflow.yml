@@ -19,4 +19,7 @@ jobs:
                 owner: context.repo.owner,
                 repo: context.repo.repo
               }))
-            console.log(output)
+            console.log(output.data)
+            for (const tag of output.data) {
+              console.log(output.data.name)
+            }
