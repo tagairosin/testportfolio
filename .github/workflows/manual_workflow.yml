@@ -2,48 +2,42 @@ name: Test Workflow
 on: 
   workflow_dispatch
 env:   
-  VERSION: '${{ secrets.VERSION }}'
+  VERSION: ${{ secrets.VERSION }}
 jobs:
   test-stuff:
     runs-on: ubuntu-latest
     steps:
       - name: list tags
         uses: actions/github-script@v5
-        env:
-          VERSION: '${{secrets.VERSION}}'
         continue-on-error: true
         id: list_tags
+        env:
+          VERSION: '${{secrets.VERSION}}'
         with:
           script: |
-            const { VERSION } = process.env
-            console.log(`${VERSION}`)
-            var found = false
+            var notfound = true
             const output = await(github.rest.repos.listTags({
                 owner: context.repo.owner,
                 repo: context.repo.repo
               }))
-            #console.log(output.data)
-            # does tag exist for this version?
-            #for (const tag of output.data) {
-            #  console.log(tag.name)
-              #if (tag.name == `${VERSION}`){
-              #  found = true
-              #  console.log("version tag exists")
-              #}
-            #}
+            console.log(output.data)
+            for (const tag of output.data) {
+              console.log(tag.name)
+              # notfound = false
+            }
             const releases = await(github.rest.repos.listReleases({
                 owner: context.repo.owner,
                 repo: context.repo.repo
               }))
             console.log(releases)
-            return found
+            return notfound
       - name: Check out repo
-        if: ${{steps.list_tags.outputs.result == true}}
+        if: ${{steps.list_tags.outputs.result == false}}
         uses: actions/checkout@v2
       - name: create tag
         id: create_tag
         # last step was failure = release tag wasn't found
-        if: ${{steps.list_tags.outputs.result == true }}
+        if: ${{steps.list_tags.outputs.result == false }}
         run: |
           echo ${{steps.list_tags.outputs.result}}
           git config --global user.email "me@example.com"
