@@ -24,18 +24,5 @@ jobs:
             console.log(output)
             if (output.status == "404") {
               console.log("not found, create tag")
-              git config --global user.email "me@example.com"
-              git config --global user.name "tagairosin"
-              git tag -a "sometag" -m "tagging for release"
-              git push origin "sometag"
-              console.log("create draft release")
-              github.rest.repos.createRelease({
-                owner: context.repo.owner,
-                repo: context.repo.repo,
-                tag_name: "sometag",
-                name: "Test Release Draft",
-                draft: true,
-                body: "this is a test tag release draft etc."
-              })
             }
             
