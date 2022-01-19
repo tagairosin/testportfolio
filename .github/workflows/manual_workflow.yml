@@ -23,7 +23,7 @@ jobs:
             console.log(output.data)
             for (const tag of output.data) {
               console.log(tag.name)
-              # notfound = false
+              notfound = false
             }
             const releases = await(github.rest.repos.listReleases({
                 owner: context.repo.owner,
@@ -32,12 +32,12 @@ jobs:
             console.log(releases)
             return notfound
       - name: Check out repo
-        if: ${{steps.list_tags.outputs.result == false}}
+        if: ${{steps.list_tags.outputs.result == true}}
         uses: actions/checkout@v2
       - name: create tag
         id: create_tag
         # last step was failure = release tag wasn't found
-        if: ${{steps.list_tags.outputs.result == false }}
+        if: ${{steps.list_tags.outputs.result == true }}
         run: |
           echo ${{steps.list_tags.outputs.result}}
           git config --global user.email "me@example.com"
