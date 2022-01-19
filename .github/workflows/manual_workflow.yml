@@ -23,6 +23,7 @@ jobs:
             console.log(output.data)
             for (const tag of output.data) {
               console.log(output.data.name)
+              notfound = false
             }
             return notfound
       - name: Check out repo
