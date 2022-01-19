@@ -16,6 +16,7 @@ jobs:
         with:
           script: |
             const { VERSION } = process.env
+            console.log(`{$VERSION}`)
             var notfound = true
             const output = await(github.rest.repos.listTags({
                 owner: context.repo.owner,
