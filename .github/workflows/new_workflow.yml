@@ -1,4 +1,4 @@
-name: Send Artifacts Workflow
+name: Shiny New Workflow
 env:
   VERSION: ${{ secrets.VERSION }}
 on: 
