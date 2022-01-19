@@ -22,13 +22,31 @@ jobs:
                 repo: context.repo.repo,
                 tag_name: "sometag"
               }))
+              console.log(output)
+              # github.rest.repos.createRelease({
+              #   owner: context.repo.owner,
+              #   repo: context.repo.repo,
+              #   tag_name: `${VERSION}`,
+              #   name: "Test Release Draft",
+              #   draft: true,
+              #   body: "this is an test tag release draft etc."
+              # })
             }
             catch (error) {
               console.log(error)
               if (error.status == "404") {
-                console.log ("do stuff")
+                console.log("tag not found, create draft release")
+                github.rest.repos.createRelease({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  tag_name: "sometag",
+                  name: "Test Release Draft",
+                  draft: true,
+                  body: "this is a sometag release draft etc."
+                })
               }
             }
+            return output
       - name: next step
         run: |
           echo "past next steps"
