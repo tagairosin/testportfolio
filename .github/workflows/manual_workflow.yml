@@ -16,7 +16,7 @@ jobs:
         with:
           script: |
             const { VERSION } = process.env
-            var found = true
+            # var found = true
             try {
               const output = await(github.rest.repos.getReleaseByTag({
                 owner: context.repo.owner,
@@ -37,9 +37,10 @@ jobs:
               console.log(error)
               if (error.status == "404") {
                 found = false
+                return found
               }
             }
-            return found
+            # return found
       - name: next step
         run: |
           echo "past next steps"
