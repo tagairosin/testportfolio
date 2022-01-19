@@ -16,21 +16,19 @@ jobs:
         with:
           script: |
             const { VERSION } = process.env
-            # try {
-            #   const output = await(github.rest.repos.getReleaseByTag({
-            #     owner: context.repo.owner,
-            #     repo: context.repo.repo,
-            #     tag_name: "sometag"
-            #   }))
-            # }
-            # catch (error) {
-            #   console.log(error)
-            # }
-            return github.rest.repos.getReleaseByTag({
+            try {
+              const output = await(github.rest.repos.getReleaseByTag({
                 owner: context.repo.owner,
                 repo: context.repo.repo,
                 tag_name: "sometag"
-              })
+              }))
+            }
+            catch (error) {
+              console.log(error)
+              if (error.status == "404") {
+                console.log ("do stuff")
+              }
+            }
       - name: next step
         run: |
           echo "past next steps"
