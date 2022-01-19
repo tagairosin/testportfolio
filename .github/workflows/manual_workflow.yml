@@ -12,7 +12,7 @@ jobs:
         continue-on-error: true
         id: list_tags
         env:
-          VERSION: '${{secrets.VERSION}}'
+          VERSION: ${{ secrets.VERSION }}
         with:
           script: |
             const { VERSION } = process.env
