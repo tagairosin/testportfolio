@@ -1,0 +1,19 @@
+name: Send Artifacts Workflow
+env:
+  VERSION: ${{ secrets.VERSION }}
+on: 
+  workflow_dispatch
+jobs:
+  job1:
+    runs-on: ubuntu-latest
+    name: test stuff
+    steps:
+      - name: Install required system packages
+        run: |
+          pip install PyGithub
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Invoke endpoint
+        run: |
+          cd .github/workflows
+          python post_stuff.py
