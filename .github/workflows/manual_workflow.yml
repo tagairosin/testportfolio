@@ -17,20 +17,24 @@ jobs:
           script: |
             const { VERSION } = process.env
             var retval = true
-            const output = await(github.rest.repos.listTags({
+            github.rest.repos.listTags({
                 owner: context.repo.owner,
                 repo: context.repo.repo
-              }))
-            console.log(output)
-            # process list
-            for (const tag of output) {
-              console.log(tag);
-              if (tag.name == `${VERSION}`){
-                retval = false
-                console.log("found tag")
-              }
-            }
-            return retval
+              })
+            # const output = await(github.rest.repos.listTags({
+            #     owner: context.repo.owner,
+            #     repo: context.repo.repo
+            #   }))
+            # console.log(output)
+            # # process list
+            # for (const tag of output) {
+            #   console.log(tag);
+            #   if (tag.name == `${VERSION}`){
+            #     retval = false
+            #     console.log("found tag")
+            #   }
+            # }
+            # return retval
       - name: create tag
         id: create_tag
         # last step was failure = release tag wasn't found
