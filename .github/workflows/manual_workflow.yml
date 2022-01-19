@@ -12,11 +12,11 @@ jobs:
         continue-on-error: true
         id: list_tags
         env:
-          VERSION: ${{ secrets.VERSION }}
+          VERSION: '${{ secrets.VERSION }}'
         with:
           script: |
             const { VERSION } = process.env
-            console.log({$VERSION})
+            console.log(`{$VERSION}`)
             var notfound = true
             const output = await(github.rest.repos.listTags({
                 owner: context.repo.owner,
