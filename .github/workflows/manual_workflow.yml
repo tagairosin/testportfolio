@@ -43,21 +43,7 @@ jobs:
             const { VERSION } = process.env
             console.log("tag found, updating release draft")
             const releases = await(github.rest.repos.listReleases({
-                owner: context.repo.owner,
-                repo: context.repo.repo
+              owner: context.repo.owner,
+              repo: context.repo.repo
             }))
-            #console.log(releases)
-            for (const rel of releases.data) {
-              console.log(rel.id)
-              if (rel.tag_name == `${VERSION}`) {
-                console.log("matched tag")
-                github.rest.repos.updateRelease({
-                  owner: context.repo.owner,
-                  repo: context.repo.repo,
-                  release_id: rel.id,
-                  name: "Updated Test Release Draft",
-                  draft: true,
-                  body: "this is an updated test tag release draft etc."
-                }) 
-              }
-            }
+            console.log(releases)
