@@ -16,6 +16,7 @@ jobs:
         with:
           script: |
             const { VERSION } = process.env
+            var found = true
             try {
               const output = await(github.rest.repos.getReleaseByTag({
                 owner: context.repo.owner,
@@ -35,17 +36,10 @@ jobs:
             catch (error) {
               console.log(error)
               if (error.status == "404") {
-                console.log("tag not found, create draft release")
-                github.rest.repos.createRelease({
-                  owner: context.repo.owner,
-                  repo: context.repo.repo,
-                  tag_name: "sometag",
-                  name: "Test Release Draft",
-                  draft: true,
-                  body: "this is a sometag release draft etc."
-                })
+                found = false
               }
             }
+            return found
       - name: next step
         run: |
           echo "past next steps"
