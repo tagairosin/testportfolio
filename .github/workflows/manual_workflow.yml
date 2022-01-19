@@ -16,21 +16,23 @@ jobs:
         with:
           script: |
             const { VERSION } = process.env
+            var found = false
             try {
               const output = await(github.rest.repos.getReleaseByTag({
                 owner: context.repo.owner,
                 repo: context.repo.repo,
                 tag_name: "sometag"
               }))
+              found = true
               console.log(output)
             }
             catch (error) {
               console.log(error)
               if (error.status == "404") {
                 console.log("not found")
-                var found = false
               }
             }
+            return found
       - name: next step
         run: |
           echo "past next steps"
