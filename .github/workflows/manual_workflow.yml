@@ -9,14 +9,13 @@ jobs:
         uses: actions/github-script@v5
         continue-on-error: true
         id: list_tags
-        #env:
-        #  VERSION: '${{ secrets.VERSION }}'
+        env:
+         VERSION: '${{ secrets.VERSION }}'
         with:
-          VERSION: ${{ secrets.VERSION }}
           script: |
-            #const { VERSION } = process.env
-            console.log(`{$VERSION}`)
-            var notfound = true
+            const { VERSION } = process.env
+            console.log(`${VERSION}`)
+            var found = false
             const output = await(github.rest.repos.listTags({
                 owner: context.repo.owner,
                 repo: context.repo.repo
@@ -24,21 +23,24 @@ jobs:
             console.log(output.data)
             for (const tag of output.data) {
               console.log(tag.name)
-              notfound = false
+              if (tag.name == `${VERSION}`) {
+                found = true
+                console.log("found tag")
+              }
             }
             const releases = await(github.rest.repos.listReleases({
                 owner: context.repo.owner,
                 repo: context.repo.repo
               }))
             console.log(releases)
-            return notfound
+            return found
       - name: Check out repo
-        if: ${{steps.list_tags.outputs.result == true}}
+        if: ${{steps.list_tags.outputs.result == false}}
         uses: actions/checkout@v2
       - name: create tag
         id: create_tag
         # last step was failure = release tag wasn't found
-        if: ${{steps.list_tags.outputs.result == true }}
+        if: ${{steps.list_tags.outputs.result == false }}
         run: |
           echo ${{steps.list_tags.outputs.result}}
           git config --global user.email "me@example.com"
