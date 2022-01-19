@@ -5,10 +5,9 @@ jobs:
   test-stuff:
     runs-on: ubuntu-latest
     steps:
-      - name: list tags
+      - name: check tags
         uses: actions/github-script@v5
-        continue-on-error: true
-        id: list_tags
+        id: check_tags
         env:
          VERSION: '${{ secrets.VERSION }}'
         with:
@@ -20,45 +19,74 @@ jobs:
                 owner: context.repo.owner,
                 repo: context.repo.repo
               }))
-            console.log(output.data)
+            #console.log(output.data)
             for (const tag of output.data) {
               console.log(tag.name)
               if (tag.name == `${VERSION}`) {
                 found = true
                 console.log("found tag")
-                const releases = await(github.rest.repos.listReleases({
-                    owner: context.repo.owner,
-                    repo: context.repo.repo
-                  }))
-                console.log(releases)
-                for (const rel of releases.data) {
-                  console.log(rel.id)
-                  if (rel.tag_name == `${VERSION}`) {
-                    console.log("matched tag")
-                     github.rest.repos.updateRelease({
-                      owner: context.repo.owner,
-                      repo: context.repo.repo,
-                      release_id: rel.id,
-                      name: "Updated Test Release Draft",
-                      draft: true,
-                      body: "this is an updated test tag release draft etc."
-                    }) 
-                  }
-                }
+              }
+            }       
+            return found
+      - name: update release draft
+        id: update_draft
+        if: ${{steps.check_tags.outputs.result == true }}
+        uses: actions/github-script@v5
+        env:
+         VERSION: '${{ secrets.VERSION }}'
+        with:
+          script: |
+            const { VERSION } = process.env
+            console.log("tag found, updating release draft")
+            const releases = await(github.rest.repos.listReleases({
+                owner: context.repo.owner,
+                  repo: context.repo.repo
+            }))
+            #console.log(releases)
+            for (const release of releases.data) {
+              console.log(release.name)
+              if (release.tag_name == `${VERSION}`) {
+                console.log("found draft release tag")
+                let release_id = release.id
+                # update the release
+                github.rest.repos.updateRelease({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  release_id: release_id,
+                  name: "Updated Test Release Draft",
+                  draft: true,
+                  body: "this is an updated test tag release draft etc."
+                })
               }
             }
-            return found
       - name: Check out repo
-        if: ${{steps.list_tags.outputs.result == false}}
+        if: ${{steps.check_tags.outputs.result == false}}
         uses: actions/checkout@v2
       - name: create tag
         id: create_tag
-        # last step was failure = release tag wasn't found
-        if: ${{steps.list_tags.outputs.result == false }}
+        # create a new tag since it version tag wasn't found
+        if: ${{steps.check_tags.outputs.result == false }}
         run: |
-          echo ${{steps.list_tags.outputs.result}}
           git config --global user.email "me@example.com"
           git config --global user.name "tagairosin"
           git tag -a ${VERSION} -m "tagging for release"
           git push origin ${VERSION}
           echo "tag created"
+      - name: create release draft
+        id: create_draft
+        if: ${{steps.check_tags.outputs.result == false }}
+        uses: actions/github-script@v5
+        env:
+         VERSION: '${{ secrets.VERSION }}'
+        with:
+          script: |
+            const { VERSION } = process.env
+            console.log("tag not found, creating release draft")
+              github.rest.repos.createRelease({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                tag_name: `${VERSION}`,
+                name: "Test Release Draft",
+                draft: true,
+                body: "this is an test tag release draft etc."
+              })
