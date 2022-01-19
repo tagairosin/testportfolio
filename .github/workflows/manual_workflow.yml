@@ -19,7 +19,7 @@ jobs:
               repo: context.repo.repo
             }))
             console.log("after getreleasebytag")
-            console.log(result)
+            console.log(list_output)
             return list_output
       - name: steps result
         run: echo "${{steps.list_tags.outputs.result}}"
