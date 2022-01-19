@@ -15,6 +15,7 @@ jobs:
           VERSION: '${{secrets.VERSION}}'
         with:
           script: |
+            var notfound = true
             const output = await(github.rest.repos.listTags({
                 owner: context.repo.owner,
                 repo: context.repo.repo
@@ -23,3 +24,4 @@ jobs:
             for (const tag of output.data) {
               console.log(output.data.name)
             }
+            return notfound
