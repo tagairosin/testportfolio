@@ -1,11 +1,12 @@
 name: Test Workflow
 on: 
   workflow_dispatch
+env:   
+  VERSION: ${{ secrets.VERSION }}
 jobs:
   test-stuff:
     runs-on: ubuntu-latest
     steps:
-
       - name: list tags
         uses: actions/github-script@v5
         continue-on-error: true
