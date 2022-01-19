@@ -32,13 +32,12 @@ jobs:
       
       - name: update release draft
         id: update_draft
-        #if: ${{steps.check_tags.outputs.result == true }}
+        if: ${{steps.check_tags.outputs.result == true}}
         uses: actions/github-script@v5
         env:
          VERSION: '${{ secrets.VERSION }}'
         with:
           script: |
-            console.log(${{steps.check_tags.outputs.result}})
             const { VERSION } = process.env
             console.log("tag found, updating release draft")
             const releases = await(github.rest.repos.listReleases({
