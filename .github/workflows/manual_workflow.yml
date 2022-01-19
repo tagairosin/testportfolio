@@ -25,3 +25,6 @@ jobs:
               console.log(output.data.name)
             }
             return notfound
+      - name: Check out repo
+        if: ${{steps.list_tags.outputs.result}}
+        uses: actions/checkout@v2
