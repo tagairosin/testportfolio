@@ -1,6 +1,5 @@
 import os
 import requests
-from github import Github
 
 def main():
     this_repo = os.environ.get('VERSION')
