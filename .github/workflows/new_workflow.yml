@@ -10,7 +10,7 @@ jobs:
     steps:
       - name: Install required system packages
         run: |
-          pip install PyGithub
+          pip install PyGithub requests
       - name: Checkout
         uses: actions/checkout@v2
       - name: run script
