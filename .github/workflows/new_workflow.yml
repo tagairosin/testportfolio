@@ -13,7 +13,7 @@ jobs:
           pip install PyGithub
       - name: Checkout
         uses: actions/checkout@v2
-      - name: Invoke endpoint
+      - name: run script
         run: |
           cd .github/workflows
           python post_stuff.py
