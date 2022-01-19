@@ -16,9 +16,9 @@ jobs:
             console.log(`${VERSION}`)
             var found = false
             const output = await(github.rest.repos.listTags({
-                owner: context.repo.owner,
-                repo: context.repo.repo
-              }))
+              owner: context.repo.owner,
+              repo: context.repo.repo
+            }))
             #console.log(output.data)
             for (const tag of output.data) {
               console.log(tag.name)
@@ -28,6 +28,7 @@ jobs:
               }
             }       
             return found
+
 #       - name: update release draft
 #         id: update_draft
 #         if: ${{steps.check_tags.outputs.result == true }}
