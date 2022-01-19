@@ -1,8 +1,6 @@
 name: Test Workflow
 on: 
   workflow_dispatch
-env:   
-  VERSION: ${{ secrets.VERSION }}
 jobs:
   test-stuff:
     runs-on: ubuntu-latest
@@ -11,11 +9,12 @@ jobs:
         uses: actions/github-script@v5
         continue-on-error: true
         id: list_tags
-        env:
-          VERSION: '${{ secrets.VERSION }}'
+        #env:
+        #  VERSION: '${{ secrets.VERSION }}'
         with:
+          VERSION: ${{ secrets.VERSION }}
           script: |
-            const { VERSION } = process.env
+            #const { VERSION } = process.env
             console.log(`{$VERSION}`)
             var notfound = true
             const output = await(github.rest.repos.listTags({
