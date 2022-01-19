@@ -16,13 +16,15 @@ jobs:
         with:
           script: |
             const { VERSION } = process.env
-            const output = await(github.rest.repos.getReleaseByTag({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              tag_name: "sometag"
-            }))
-            console.log(output)
-            if (output.status == "404") {
-              console.log("not found, create tag")
+            try {
+              const output = await(github.rest.repos.getReleaseByTag({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                tag_name: "sometag"
+              }))
+            }
+            catch (error) {
+              console.log(error)
             }
             
+
