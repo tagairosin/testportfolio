@@ -35,7 +35,7 @@ jobs:
       - name: create tag
         id: create_tag
         # last step was failure = release tag wasn't found
-        if: ${{ failure() }}
+        if: ${{ steps.list_tags.outputs.result == "false" }}
         run: |
           echo "${{steps.list_tags.outputs.result}}"
           git config --global user.email "me@example.com"
