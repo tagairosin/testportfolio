@@ -16,26 +16,22 @@ jobs:
         with:
           script: |
             const { VERSION } = process.env
-            var retval = false
-            try {
-              const output = await(github.rest.repos.getReleaseByTag({
+            var retval = true
+            const output = await(github.rest.repos.listTags({
                 owner: context.repo.owner,
                 repo: context.repo.repo,
                 tag_name: `${VERSION}`
               }))
-              console.log(output)
-            }
-            catch (error) {
-              console.log(error)
-              if (error.status == "404") {
-                console.log("not found")
-                retval = true
+            console.log(output)
+            # process list
+            for (const tag of output) {
+              console.log(tag);
+              if (tag.name == `${VERSION}`){
+                retval = false
+                console.log("found tag")
               }
             }
             return retval
-      - name: Check out repo
-        if: ${{steps.list_tags.outputs.result}}
-        uses: actions/checkout@v2
       - name: create tag
         id: create_tag
         # last step was failure = release tag wasn't found
@@ -47,20 +43,3 @@ jobs:
           git tag -a ${VERSION} -m "tagging for release"
           git push origin ${VERSION}
           echo "tag created"
-      - name: draft release
-        if: ${{steps.list_tags.outputs.result}}
-        uses: actions/github-script@v5
-        id: draft_release
-        env:
-          VERSION: '${{secrets.VERSION}}'
-        with:
-          script: |
-            const { VERSION } = process.env
-            github.rest.repos.createRelease({
-                owner: context.repo.owner,
-                repo: context.repo.repo,
-                tag_name: `${VERSION}`,
-                name: "Test Release",
-                draft: true,
-                body: "this is a test tag release draft etc."
-              })
