@@ -27,12 +27,12 @@ jobs:
             }
             return notfound
       - name: Check out repo
-        if: ${{steps.list_tags.outputs.result}}
+        if: ${{steps.list_tags.outputs.result == true}}
         uses: actions/checkout@v2
       - name: create tag
         id: create_tag
         # last step was failure = release tag wasn't found
-        if: ${{steps.list_tags.outputs.result}}
+        if: ${{steps.list_tags.outputs.result == true }}
         run: |
           echo ${{steps.list_tags.outputs.result}}
           git config --global user.email "me@example.com"
