@@ -15,7 +15,8 @@ jobs:
           VERSION: '${{secrets.VERSION}}'
         with:
           script: |
-            github.rest.repos.listTags({
+            const output = await(github.rest.repos.listTags({
                 owner: context.repo.owner,
                 repo: context.repo.repo
-              })
+              }))
+            console.log(output)
