@@ -26,6 +26,8 @@ jobs:
             catch (error) {
               console.log(error)
             }
+            console.log("this is past the try/catch")
+            return output
       - name: next step
         run: |
           echo "past next steps"
