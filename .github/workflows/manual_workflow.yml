@@ -16,8 +16,9 @@ jobs:
         with:
           script: |
             const { VERSION } = process.env
+            var output
             try {
-              const output = await(github.rest.repos.getReleaseByTag({
+              output = await(github.rest.repos.getReleaseByTag({
                 owner: context.repo.owner,
                 repo: context.repo.repo,
                 tag_name: "sometag"
