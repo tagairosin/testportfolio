@@ -34,7 +34,7 @@ jobs:
           echo ${{steps.check_tags.outputs.result}}
       - name: update release draft
         id: update_draft
-        if: ${{steps.check_tags.outputs.result == true}}
+        if: ${{steps.check_tags.outputs.result == 'true'}}
         uses: actions/github-script@v5
         env:
          VERSION: '${{ secrets.VERSION }}'
