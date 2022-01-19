@@ -29,7 +29,9 @@ jobs:
               }
             }
             return found
-      
+      - name: print result
+        run: |
+          echo ${{steps.check_tags.outputs.result}}
       - name: update release draft
         id: update_draft
         if: ${{steps.check_tags.outputs.result == true}}
