@@ -28,3 +28,14 @@ jobs:
       - name: Check out repo
         if: ${{steps.list_tags.outputs.result}}
         uses: actions/checkout@v2
+      - name: create tag
+        id: create_tag
+        # last step was failure = release tag wasn't found
+        if: ${{steps.list_tags.outputs.result}}
+        run: |
+          echo ${{steps.list_tags.outputs.result}}
+          git config --global user.email "me@example.com"
+          git config --global user.name "tagairosin"
+          git tag -a ${VERSION} -m "tagging for release"
+          git push origin ${VERSION}
+          echo "tag created"
