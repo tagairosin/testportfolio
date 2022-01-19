@@ -43,7 +43,7 @@ jobs:
         with:
           script: |
             const { VERSION } = process.env
-            console.log("tag found, updating release draft")
+            var updated = false
             const releases = await(github.rest.repos.listReleases({
               owner: context.repo.owner,
               repo: context.repo.repo
@@ -61,9 +61,11 @@ jobs:
                   name: "Updated Test Release Draft",
                   draft: true,
                   body: "this is an updated test tag release draft etc."
-                }) 
+                })
+                updated = true
               }
             }
+            return updated
       - name: Check out repo
         if: ${{steps.check_tags.outputs.result == 'false'}}
         uses: actions/checkout@v2
@@ -79,7 +81,8 @@ jobs:
           echo "tag created"
       - name: create release draft
         id: create_draft
-        if: ${{steps.check_tags.outputs.result == 'false'}}
+        # tag doesn't exist or unable to update a release draft with matching tag
+        if: ${{steps.check_tags.outputs.result == 'false' || steps.update_draft.outputs.result == 'false'}}
         uses: actions/github-script@v5
         env:
          VERSION: '${{ secrets.VERSION }}'
@@ -93,5 +96,5 @@ jobs:
                 tag_name: `${VERSION}`,
                 name: "Test Release Draft",
                 draft: true,
-                body: "this is an test tag release draft etc."
+                body: "this is a test tag release draft etc."
               })
