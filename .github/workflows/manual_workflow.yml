@@ -15,34 +15,7 @@ jobs:
           VERSION: '${{secrets.VERSION}}'
         with:
           script: |
-            const { VERSION } = process.env
-            var retval = true
             github.rest.repos.listTags({
                 owner: context.repo.owner,
                 repo: context.repo.repo
               })
-            # const output = await(github.rest.repos.listTags({
-            #     owner: context.repo.owner,
-            #     repo: context.repo.repo
-            #   }))
-            # console.log(output)
-            # # process list
-            # for (const tag of output) {
-            #   console.log(tag);
-            #   if (tag.name == `${VERSION}`){
-            #     retval = false
-            #     console.log("found tag")
-            #   }
-            # }
-            # return retval
-      - name: create tag
-        id: create_tag
-        # last step was failure = release tag wasn't found
-        if: ${{steps.list_tags.outputs.result}}
-        run: |
-          echo ${{steps.list_tags.outputs.result}}
-          git config --global user.email "me@example.com"
-          git config --global user.name "tagairosin"
-          git tag -a ${VERSION} -m "tagging for release"
-          git push origin ${VERSION}
-          echo "tag created"
