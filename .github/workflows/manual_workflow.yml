@@ -26,5 +26,7 @@ jobs:
             catch (error) {
               console.log(error)
             }
-            
-
+      - name: next step
+        run: |
+          echo "past next steps"
+          echo "${{steps.list_tags.outputs.result}}"          
