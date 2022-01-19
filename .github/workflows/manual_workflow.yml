@@ -19,10 +19,12 @@ jobs:
               repo: context.repo.repo,
               tag_name: "sometag"
             }))
-            if (output.status == "404"):
+            if (output.status == "404") {
               console.log("not found, create tag and draft release")
-            else:
+            }
+            else {
               console.log("update the draft release")
+            }
 #       - name: Tag repo
 #         run: |
 #           git config --global user.email "me@example.com"
