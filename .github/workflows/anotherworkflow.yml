@@ -21,7 +21,7 @@ jobs:
             const output = await(github.rest.git.getRef({
                 owner: context.repo.owner,
                 repo: context.repo.repo,
-                ref: "tags/v1.0.a"
+                ref: "tags/v1.0.b"
             }))
             console.log(output)
             return found
