@@ -31,4 +31,17 @@ jobs:
             return retval
       - name: only if fail
         if: ${{steps.check_tags.outputs.result == 'false'}}
-        run: echo "did not find tag"
+        uses: actions/github-script@v5
+        with:
+          script: |
+            const { VERSION, SHORT_NAME } = process.env
+            console.log("creating release draft")
+              github.rest.repos.createRelease({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                tag_name: "v1.0.b",
+                name: `${SHORT_NAME} ${VERSION}`,
+                draft: true,
+                body: "Update this description with release notes, etc."
+              })
+            
