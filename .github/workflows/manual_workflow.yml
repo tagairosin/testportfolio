@@ -60,7 +60,7 @@ jobs:
                   repo: context.repo.repo,
                   tag_name: `${VERSION}`,
                   release_id: rel.id,
-                  name: "Solution Name ".concat`${VERSION}`,
+                  name: "Solution Name ".concat(`${VERSION}`),
                   draft: true,
                   body: "Update this description with release notes, etc."
                 })
@@ -96,7 +96,7 @@ jobs:
                 owner: context.repo.owner,
                 repo: context.repo.repo,
                 tag_name: `${VERSION}`,
-                name: "Solution Name ".concat`${VERSION}`,
+                name: "Solution Name ".concat(`${VERSION}`),
                 draft: true,
                 body: "Update this description with release notes, etc."
               })
