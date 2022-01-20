@@ -16,14 +16,14 @@ jobs:
         with:
           script: |
             const { VERSION } = process.env
-            #console.log(`${VERSION}`)
+            console.log(`${VERSION}`)
             var found = true
             try {
-              github.rest.git.getRef({
-                  owner: context.repo.owner,
-                  repo: context.repo.repo,
-                  ref: "tags/v1.0.b"
-              })
+              var output = await (github.rest.git.getRef({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                ref: "tags/v1.0.b"
+              }))
             }
             catch {
               found = false
