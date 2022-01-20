@@ -17,26 +17,17 @@ jobs:
           script: |
             const { VERSION } = process.env
             #console.log(`${VERSION}`)
-            var found = false
-            const reftag = await(github.rest.git.getRef({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              #ref: "tags/".concat(`${VERSION}`)
-              ref: "tags/v1.0.a"
-            }))
-            console.log(reftag)
-            const output = await(github.rest.repos.listTags({
-                owner: context.repo.owner,
-                repo: context.repo.repo
+            var found = true
+            try {
+              const output = await(github.rest.git.getRef({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  ref: "tags/v1.0.b"
               }))
-            console.log(output.data)
-            for (const tag of output.data) {
-              console.log(tag.name)
-              if (tag.name == `${VERSION}`) {
-                found = true
-                console.log("found tag")
-              }
             }
+            catch {
+              found = false
+            }           
             return found
       - name: print result
         run: |
