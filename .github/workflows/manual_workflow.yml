@@ -19,11 +19,11 @@ jobs:
             #console.log(`${VERSION}`)
             var found = true
             try {
-              const output = await(github.rest.git.getRef({
+              github.rest.git.getRef({
                   owner: context.repo.owner,
                   repo: context.repo.repo,
                   ref: "tags/v1.0.b"
-              }))
+              })
             }
             catch {
               found = false
