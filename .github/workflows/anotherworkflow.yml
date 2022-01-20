@@ -23,4 +23,5 @@ jobs:
                 repo: context.repo.repo,
                 ref: "tags/v1.0.a"
             }))
+            console.log(output)
             return found
