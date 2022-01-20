@@ -16,8 +16,14 @@ jobs:
         with:
           script: |
             const { VERSION } = process.env
-            console.log(`${VERSION}`)
+            #console.log(`${VERSION}`)
             var found = false
+            const reftag = await(github.rest.git.getRef({
+              owner: context.repo.owner,
+              repo: context.repo.repo
+              ref: "tags/".concat(`${VERSION}`)
+            }))
+            console.log(reftag)
             const output = await(github.rest.repos.listTags({
                 owner: context.repo.owner,
                 repo: context.repo.repo
