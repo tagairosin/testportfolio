@@ -17,14 +17,12 @@ jobs:
           script: |
             const { VERSION } = process.env
             console.log(`${VERSION}`)
-            var found = false
             const output = await(github.rest.git.getRef({
                 owner: context.repo.owner,
                 repo: context.repo.repo,
                 ref: "tags/v1.0.b"
             }))
             console.log(output)
-            return found
       - name: only if fail
         if: ${{ failure() }}
         run: echo "did not find tag"
