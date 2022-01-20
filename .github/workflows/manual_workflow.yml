@@ -11,7 +11,7 @@ jobs:
     steps:
       - name: check tags
         uses: actions/github-script@v5
-        continue-on-error: true
+        #continue-on-error: true
         id: check_tags
         with:
           script: |
@@ -21,7 +21,8 @@ jobs:
             const reftag = await(github.rest.git.getRef({
               owner: context.repo.owner,
               repo: context.repo.repo,
-              ref: "tags/".concat(`${VERSION}`)
+              #ref: "tags/".concat(`${VERSION}`)
+              ref: tags/v1.0.a
             }))
             console.log(reftag)
             const output = await(github.rest.repos.listTags({
