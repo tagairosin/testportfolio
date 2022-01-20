@@ -16,13 +16,19 @@ jobs:
         with:
           script: |
             const { VERSION } = process.env
+            var retval = true
             console.log(`${VERSION}`)
-            const output = await(github.rest.git.getRef({
-                owner: context.repo.owner,
-                repo: context.repo.repo,
-                ref: "tags/v1.0.b"
-            }))
-            console.log(output)
+            try {
+              const output = await(github.rest.git.getRef({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  ref: "tags/v1.0.b"
+              }))
+            }
+            catch {
+              retval = false
+            }
+            return retval
       - name: only if fail
-        if: ${{ failure() }}
+        if: ${{steps.check_tags.outputs.result == 'false'}}
         run: echo "did not find tag"
