@@ -22,7 +22,7 @@ jobs:
               owner: context.repo.owner,
               repo: context.repo.repo,
               #ref: "tags/".concat(`${VERSION}`)
-              ref: tags/v1.0.a
+              ref: "tags/v1.0.a"
             }))
             console.log(reftag)
             const output = await(github.rest.repos.listTags({
