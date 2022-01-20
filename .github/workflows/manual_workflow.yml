@@ -22,7 +22,7 @@ jobs:
               var output = await (github.rest.git.getRef({
                 owner: context.repo.owner,
                 repo: context.repo.repo,
-                ref: "tags/v1.0.b"
+                ref: "tags/".concat(`${VERSION}`)
               }))
             }
             catch {
