@@ -1,0 +1,27 @@
+name: Test Workflow
+on: 
+  workflow_dispatch
+env:
+  VERSION: ${{ secrets.VERSION }}
+  TEMPLATE: "https://somebucket.s3.amazonaws.com/${{ github.event.repository.name }}/latest/${{ github.event.repository.name }}-release.template"
+  SHORT_NAME: SOMENAME
+jobs:
+  test-stuff:
+    runs-on: ubuntu-latest
+    steps:
+      - name: check tags
+        uses: actions/github-script@v5
+        #continue-on-error: true
+        id: check_tags
+        with:
+          script: |
+            const { VERSION } = process.env
+            #console.log(`${VERSION}`)
+            var found = false
+            const reftag = await(github.rest.git.getRef({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              #ref: "tags/".concat(`${VERSION}`)
+              ref: "tags/v1.0.a"
+            }))
+            console.log(reftag)
