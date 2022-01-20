@@ -13,8 +13,6 @@ jobs:
         uses: actions/github-script@v5
         continue-on-error: true
         id: check_tags
-        env:
-         VERSION: '${{ secrets.VERSION }}'
         with:
           script: |
             const { VERSION } = process.env
@@ -41,8 +39,6 @@ jobs:
         id: update_draft
         if: ${{steps.check_tags.outputs.result == 'true'}}
         uses: actions/github-script@v5
-        #env:
-        # VERSION: '${{ secrets.VERSION }}'
         with:
           script: |
             const { VERSION, SHORT_NAME } = process.env
@@ -87,8 +83,6 @@ jobs:
         # tag doesn't exist or unable to update a release draft with matching tag
         if: ${{steps.check_tags.outputs.result == 'false' || steps.update_draft.outputs.result == 'false'}}
         uses: actions/github-script@v5
-        env:
-         VERSION: '${{ secrets.VERSION }}'
         with:
           script: |
             const { VERSION } = process.env
@@ -97,7 +91,7 @@ jobs:
                 owner: context.repo.owner,
                 repo: context.repo.repo,
                 tag_name: `${VERSION}`,
-                name: "Solution Name ".concat(`${VERSION}`),
+                name: (`${SHORT_NAME}`).concat(" ", `${VERSION}`),,
                 draft: true,
                 body: "Update this description with release notes, etc."
               })
