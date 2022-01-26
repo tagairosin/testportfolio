@@ -60,6 +60,7 @@ jobs:
                   body: "Update this description with release notes, etc."
                 })
                 updated = true
+                break
               }
             }
             return updated
