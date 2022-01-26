@@ -89,7 +89,7 @@ jobs:
                 owner: context.repo.owner,
                 repo: context.repo.repo,
                 tag_name: `${VERSION}`,
-                name: (`${SHORT_NAME}`).concat(" ", `${VERSION}`),,
+                name: `${SHORT_NAME} ${VERSION}`,
                 draft: true,
                 body: "Update this description with release notes, etc."
               })
