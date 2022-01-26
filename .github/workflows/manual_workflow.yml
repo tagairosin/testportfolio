@@ -74,7 +74,7 @@ jobs:
           git config --global user.email "me@example.com"
           git config --global user.name "tagairosin"
           git tag -f -a ${VERSION} -m "tagging for release"
-          git push origin ${VERSION}
+          git push -f origin ${VERSION}
           echo "tag created"
       - name: create release draft
         id: create_draft
