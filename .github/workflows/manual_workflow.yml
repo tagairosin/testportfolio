@@ -83,7 +83,7 @@ jobs:
         uses: actions/github-script@v5
         with:
           script: |
-            const { VERSION } = process.env
+            const { VERSION, SHORT_NAME } = process.env
             console.log("tag not found, creating release draft")
               github.rest.repos.createRelease({
                 owner: context.repo.owner,
