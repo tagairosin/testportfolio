@@ -69,7 +69,8 @@ jobs:
         uses: actions/checkout@v2
       - name: Read file into variable
         run: |
-          cat README.md > $CONTENT >> $GITHUB_ENV
+          CONTENT=$(cat README.md)
+          echo "CONTENT=$CONTENT" >> $GITHUB_ENV
       - name: create tag
         id: create_tag
         # create a new tag since it version tag wasn't found
