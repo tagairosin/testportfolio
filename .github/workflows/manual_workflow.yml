@@ -67,6 +67,9 @@ jobs:
       - name: Check out repo
         #if: ${{steps.check_tags.outputs.result == 'false'}}
         uses: actions/checkout@v2
+      - name: Read file into variable
+        run: |
+          cat README.md > $CONTENT >> $GITHUB_ENV
       - name: create tag
         id: create_tag
         # create a new tag since it version tag wasn't found
@@ -84,7 +87,7 @@ jobs:
         uses: actions/github-script@v5
         with:
           script: |
-            const { VERSION, SHORT_NAME } = process.env
+            const { VERSION, SHORT_NAME, CONTENT } = process.env
             console.log("tag not found, creating release draft")
               github.rest.repos.createRelease({
                 owner: context.repo.owner,
@@ -92,5 +95,5 @@ jobs:
                 tag_name: `${VERSION}`,
                 name: `${SHORT_NAME} ${VERSION}`,
                 draft: true,
-                body: "Update this description with release notes, etc."
+                body: `${CONTENT}`
               })
